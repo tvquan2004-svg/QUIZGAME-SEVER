@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Qwik API",
+    "description": "Qwik Quiz Game - Phase 0 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login with Apple",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set('token', jsonData.token);",
+                  "console.log('Token set:', jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identityToken\": \"test-apple-id-123\",\n  \"username\": \"testuser\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/apple",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "apple"]
+            }
+          }
+        },
+        {
+          "name": "Login with Apple (New User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identityToken\": \"test-apple-id-456\",\n  \"username\": \"player2\",\n  \"avatarUrl\": \"https://example.com/avatar.png\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/apple",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "apple"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quiz",
+      "item": [
+        {
+          "name": "Get Feed",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/quiz/feed?page=0&size=5&category=science",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "quiz", "feed"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "5" },
+                { "key": "category", "value": "science" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Feed (All)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/quiz/feed?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "quiz", "feed"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Answer Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardId\": 1,\n  \"selectedAns\": \"B\",\n  \"timeTakenMs\": 4500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/quiz/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "quiz", "answer"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
