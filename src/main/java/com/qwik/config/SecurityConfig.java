@@ -1,6 +1,6 @@
 package com.qwik.config;
 
-import com.qwik.security.JwtAuthenticationFilter;
+import com.qwik.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
